@@ -1,67 +1,76 @@
-const taskForm = document.querySelector<HTMLFormElement>('.form');
-const formInput = document.querySelector<HTMLInputElement>('.form-input');
+const taskForm = document.querySelector<HTMLFormElement>('.form')
+const formInput = document.querySelector<HTMLInputElement>('.form-input')
 
-const taskListElement = document.querySelector<HTMLUListElement>('.list');
+const taskListElement = document.querySelector<HTMLUListElement>('.list')
 
 type Task = {
-  description: string;
-  isCompleted: boolean;
-};
-
-const tasks: Task[] = loadTasks();
-
-tasks.forEach(renderTask);
-
-function loadTasks(): Task[] {
-  const storedTasks = localStorage.getItem('tasks');
-  return storedTasks ? JSON.parse(storedTasks) : [];
+  description: string
+  isCompleted: boolean
 }
 
-taskForm?.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const taskDescription = formInput?.value;
+const tasks: Task[] = loadTasks()
+tasks.forEach(renderTask)
+
+taskForm?.addEventListener('submit', createTask)
+
+// Create Task
+function createTask(event: SubmitEvent) {
+  event.preventDefault()
+  const taskDescription = formInput?.value
+
   if (taskDescription) {
-    const task: Task = {
-      description: taskDescription,
-      isCompleted: false,
-    };
     // add task to list
-    addTask(task);
-    // render tasks
-    renderTask(task);
-    // update local storage
-    updateStorage();
-    formInput.value = '';
-    return;
-  }
-  alert('Please enter a task description');
-});
+    const task: Task = { description: taskDescription, isCompleted: false }
+    addTask(task)
 
-function addTask(task: Task): void {
-  tasks.push(task);
-  console.log(tasks);
+    // render task
+    renderTask(task)
+
+    // update local storage
+    updateStorage()
+
+    // reset form value
+    formInput.value = ''
+
+    return
+  }
+  alert('Please enter a task description')
 }
 
+// Add Task to List
+function addTask(task: Task): void {
+  tasks.push(task)
+}
+
+// Render Task to DOM List
 function renderTask(task: Task): void {
-  const taskElement = document.createElement('li');
-  taskElement.textContent = task.description;
+  const taskElement = document.createElement('li')
+  taskElement.textContent = task.description
 
   // checkbox
-  const taskCheckbox = document.createElement('input');
-  taskCheckbox.type = 'checkbox';
-  taskCheckbox.checked = task.isCompleted;
+  const taskCheckbox = document.createElement('input')
+  taskCheckbox.type = 'checkbox'
+  taskCheckbox.checked = task.isCompleted
 
-  // toggle checkbox
-
+  // toggle checkbox ability
   taskCheckbox.addEventListener('change', () => {
-    task.isCompleted = !task.isCompleted;
-    updateStorage();
-  });
-
-  taskElement.appendChild(taskCheckbox);
-  taskListElement?.appendChild(taskElement);
+    task.isCompleted = !task.isCompleted
+    updateStorage()
+  })
+  
+  taskElement.appendChild(taskCheckbox)
+  taskListElement?.appendChild(taskElement)
 }
 
+// Update Local Storage
 function updateStorage(): void {
-  localStorage.setItem('tasks', JSON.stringify(tasks));
+  localStorage.setItem('tasks', JSON.stringify(tasks))
+}
+
+// Loads tasks from local storage
+function loadTasks(): Task[] {
+  const storedTasks = localStorage.getItem('tasks')
+  console.log(storedTasks)
+
+  return storedTasks ? JSON.parse(storedTasks) : []
 }

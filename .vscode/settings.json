@@ -3,5 +3,23 @@
     "activityBar.background": "#E2A1BD",
     "titleBar.activeBackground": "#EBBED2",
     "titleBar.activeForeground": "#2E0E1C"
-  }
+  },
+  "favorites.resources": [
+    {
+      "filePath": "comfy-store/src/pages",
+      "group": "Default"
+    },
+    {
+      "filePath": "comfy-store/src/components",
+      "group": "Default"
+    },
+    {
+      "filePath": "comfy-store/src/utils",
+      "group": "Default"
+    },
+    {
+      "filePath": "comfy-store/src/App.tsx",
+      "group": "Default"
+    }
+  ]
 }

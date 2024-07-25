@@ -1,9 +1,33 @@
+import { fetchTours } from './types'
+import { useQuery } from '@tanstack/react-query'
+
 function Component() {
+  const {
+    data: tours,
+    isPending,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['tours'],
+    queryFn: fetchTours,
+  })
+
+  if (isPending) return <h2>Loading...</h2>
+  if (isError) return <h2>Error : {error.message}</h2>
+
   return (
     <div>
-      <h2>React & Typescript</h2>
-      <h2>Fetch Data</h2>
+      <h2 className="mb-1">
+        {tours.map((tour) => {
+          return (
+            <p className="mb-1" key={tour.id}>
+              {tour.name}
+            </p>
+          )
+        })}
+      </h2>
     </div>
-  );
+  )
 }
-export default Component;
+
+export default Component
