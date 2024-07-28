@@ -4,6 +4,7 @@ import {
   customFetch,
   formatAsDollars,
   type SingleProductResponse,
+  type CartItem,
 } from '@/utils'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
@@ -15,6 +16,10 @@ import { Mode } from '@/components/SelectProductAmount'
 
 // TOAST
 import { toast } from '@/components/ui/use-toast'
+
+// CART SLICE
+import { addItem } from '@/features/cart/cartSlice'
+import { useAppDispatch } from '@/hooks'
 
 export const loader: LoaderFunction = async ({
   params,
@@ -36,11 +41,24 @@ function SingleProduct() {
 
   const [productColor, setProductColor] = useState(colors[0])
   const [amount, setAmount] = useState(1)
+  const dispatch = useAppDispatch()
 
+  // PRODUCT ID - same item ID has different colours so this allows different colours to be added to cart
+  const cartProduct: CartItem = {
+    cartID: product.id + productColor,
+    productID: product.id,
+    image,
+    title,
+    price,
+    amount,
+    productColor,
+    company,
+  }
+
+  // ADD TO CART
   const addToCart = () => {
     console.log('Add to cart')
-    toast({ description: 'Item added to cart' })
-
+    dispatch(addItem(cartProduct))
   }
 
   return (

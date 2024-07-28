@@ -8,8 +8,11 @@ import { links } from '@/utils'
 import { AlignLeft, Armchair } from 'lucide-react'
 import { Button } from './ui/button'
 import { NavLink } from 'react-router-dom'
+import { useAppSelector } from '@/hooks'
 
 function LinksDropdown() {
+  const user = useAppSelector((state) => state.userState.user)
+
   return (
     <div>
       <DropdownMenu>
@@ -26,11 +29,21 @@ function LinksDropdown() {
         >
           {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
           {links.map((link) => {
+            // restricted routes
+            const restrictedRoutes =
+              link.href === 'checkout' || link.href === 'orders'
+
+            if (restrictedRoutes && !user) return null
             return (
               <DropdownMenuItem key={link.label}>
-                <NavLink to={link.href} className={(isActive) => {
-                  return `capitalize w-full ${isActive ? 'text-primary' : ''}`
-                }}>{link.label}</NavLink>
+                <NavLink
+                  to={link.href}
+                  className={(isActive) => {
+                    return `capitalize w-full ${isActive ? 'text-primary' : ''}`
+                  }}
+                >
+                  {link.label}
+                </NavLink>
               </DropdownMenuItem>
             )
           })}
