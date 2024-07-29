@@ -51,7 +51,7 @@ function PaginationContainer() {
   })
 
   return (
-    <Pagination>
+    <Pagination className='mt-16'>
       <PaginationContent>
         {/* PREVIOUS */}
         {page > 1 && (
